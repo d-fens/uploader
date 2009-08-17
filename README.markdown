@@ -1,10 +1,16 @@
-Python application for uploading to Rapidshare (other providers later on)
+Python application for uploading to file hosting services
 ========================================================================
 
 About
 ------------
 Uploads files to Rapidshare.com, it runs quite fast as it hashes and reads at
-the same time, example of 100MB test file `uploaded in [13.9677670002s] @ [7.16 Mb/s]`
+the same time, example of 100MB test file:
+
+	URL: http://rapidshare.com/files/XXXXXXXXX/test.bin.html
+	Delete: http://rapidshare.com/files/XXXXXXXXX/test.bin?killcode=YYYYY
+	Checksum: OK
+	Uploaded in [14.27s] @ [7.01 MB/s]
+	Scores [0,60000]
 
 
 Usage
@@ -32,11 +38,11 @@ Usage
 Examples
 ------------
 
-Create a random 100MB file to test uploading with, `dd if=/dev/zero of=test.bin bs=100M count=1`.
+Create a random 100MB file to test uploading with, `dd if=/dev/zero of=test.bin bs=100M count=1`
 
-To upload without an account, `uploader test.bin`.
+To upload without an account, `uploader test.bin`
 
-To upload as a collector, `uploader --collector -u username -p password test.bin`.
+To upload as a collector, `uploader --collector -u username -p password test.bin`
 
-To upload as a premium user, `uploader --premium -u username -p password test.bin`.
+To upload as a premium user, `uploader --premium -u username -p password test.bin`
 

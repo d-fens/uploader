@@ -41,15 +41,25 @@ if __name__ == '__main__':
 		else:
 			import hashlib
 		if options.chunk_size > 0:
-			r.chunk = options.chunk-size
+			r.chunk = options.chunk_size
 		start = time.time()
 
-		r.upload(arguments[0])
+		result = r.upload(arguments[0])
+		if result:
+			print "URL: %s\nDelete: %s" % (result[0], result[1])
+			if r.enable_hashing and (r.hash == result[3]):
+				print "Checksum: OK"
+			elif r.enable_hashing:
+				print "Checksum: BAD"
+			else:
+				print "Checksum: DISABLED"
 
-		end = time.time()
-		speed = (r.length / (end - start))
-		print "uploaded in [%ss] @ [%s Mb/s]" % ((end - start), round(speed/(1024*1024), 2))
-		print "scores [%s]" % (r.cpu())
+			end = time.time()
+			speed = (r.length / (end - start))
+			print "Uploaded in [%ss] @ [%s MB/s]" % (round((end - start), 2), round(speed/(1024*1024), 2))
+			print "Scores [%s]" % (r.cpu())
+		else:
+			print "File does not exist"
 	else:
 		if options.cpu:
 			print RSUploader.cpu()

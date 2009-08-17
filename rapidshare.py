@@ -4,6 +4,7 @@ import os, sys, re, hashlib
 
 class rapidshare:
 	def __init__(self):
+		self.filename = None
 		self.username = None
 		self.password = None
 		self.collector = False
@@ -16,6 +17,7 @@ class rapidshare:
 
 	def upload(self, filename):
 		self.filename = filename
+		self.hash = None
 		if not os.path.exists(self.filename):
 			return False
 		self.length = os.path.getsize(self.filename)
@@ -105,13 +107,10 @@ class rapidshare:
 		result = s.recv(self.chunk)
 		s.close()
 
-		serverhash = re.search('File1.4=(\w+)', result)
-		if (not self.enable_hashing) or (serverhash.group(1) == self.hash):
-			print "md5 hash [%s] [valid]" % (self.hash)
-			upload = re.search('File1.1=(\S+)', result)
-			delete = re.search('File1.2=(\S+)', result)
-			print "url [%s]" % (upload.group(1))
-			print "del [%s]" % (delete.group(1))
+		r = []
+		for match in re.finditer('File1.(\d+)=(.+)', result):
+			r.append(match.group(2))
+		return r
 
 	@staticmethod
 	def cpu():
