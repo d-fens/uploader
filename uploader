@@ -10,7 +10,7 @@ try:
 except ImportError:
 	pass
 
-from rapidshare import *
+from rapidshare import Rapidshare
 
 if __name__ == '__main__':
 	p = optparse.OptionParser(description='Uploads files to rapidshare.com',
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
 	options, arguments = p.parse_args()
 	if len(arguments) >= 1:
-		r = rapidshare()
+		r = Rapidshare()
 		if options.collector and options.username and options.password:
 			r.collector = True
 			r.username = options.username
@@ -38,8 +38,6 @@ if __name__ == '__main__':
 			r.password = options.password
 		if options.disable_hashing:
 			r.enable_hashing = False
-		else:
-			import hashlib
 		if options.chunk_size > 0:
 			r.chunk = options.chunk_size
 		start = time.time()
@@ -63,6 +61,6 @@ if __name__ == '__main__':
 				print "File [%s] does not exist" % (filename)
 	else:
 		if options.cpu:
-			print RSUploader.cpu()
+			print Rapidshare.cpu()
 		else:
 			p.print_help()

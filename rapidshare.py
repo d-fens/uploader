@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
-import urllib, socket
-import os, sys, re, hashlib
+import urllib
+import socket
+import os
+import re
+import hashlib
 
-class rapidshare:
+class Rapidshare:
+	"""
+	API to upload and access information on Rapidshare.com
+	"""
+
 	def __init__(self):
 		self.filename = None
 		self.username = None
@@ -85,21 +92,21 @@ class rapidshare:
 
 		if self.enable_hashing:
 			m = hashlib.md5()
-		f = open(self.filename, 'rb')
+		fd = open(self.filename, 'rb')
 		
-		d = f.read(self.chunk)
+		d = fd.read(self.chunk)
 		while d:
 			if self.enable_hashing:
 				m.update(d)
 			s.send(d)
 
-			d = f.read(self.chunk)
+			d = fd.read(self.chunk)
 
 		if self.enable_hashing:
 			m.update(d)
 		s.send(d)
 		s.send(disposition_end)
-		f.close()
+		fd.close()
 
 		if self.enable_hashing:
 			self.hash = m.hexdigest().upper()
@@ -115,5 +122,5 @@ class rapidshare:
 	@staticmethod
 	def cpu():
 		params = urllib.urlencode({'sub': 'getapicpu_v1'})
-		f = urllib.urlopen("http://www.rapidshare.com/cgi-bin/rsapi.cgi?%s" % params)
-		return f.read()
+		fd = urllib.urlopen("http://www.rapidshare.com/cgi-bin/rsapi.cgi?%s" % params)
+		return fd.read()
