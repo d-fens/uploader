@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Module for Rapidshare API
+"""
 import urllib
 import socket
 import os

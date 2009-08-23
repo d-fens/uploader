@@ -10,24 +10,29 @@ try:
 except ImportError:
 	pass
 
-from rapidshare import Rapidshare
-
 if __name__ == '__main__':
-	p = optparse.OptionParser(description='Uploads files to rapidshare.com',
+	p = optparse.OptionParser(description='Uploads files to file hosting services',
 		prog='uploader',
-		version='0.1',
+		version='0.2',
 		usage='%prog file')
-	p.add_option('--collector', action ='store_true', help='sets the login type as collector')
-	p.add_option('--premium', action ='store_true', help='sets the login type as premium')
+	p.add_option('-P', '--provider', help='sets the hosting provider')
+	p.add_option('--collector', action='store_true', help='sets the login type as collector')
+	p.add_option('--premium', action='store_true', help='sets the login type as premium')
 	p.add_option('-u', '--username', help='sets the username')
 	p.add_option('-p', '--password', help='sets the password')
-	p.add_option('--disable-hashing', action ='store_true', help='disables hashing done while uploading', default=False)
+	p.add_option('--disable-hashing', action='store_true', help='disables hashing done while uploading', default=False)
 	p.add_option('--chunk-size', type="int", help='set the chunk size to read and upload at (bytes)')
-	p.add_option('-c', '--cpu', action ='store_true', help='returns the API CPU value for your IP address')
 
 	options, arguments = p.parse_args()
 	if len(arguments) >= 1:
-		r = Rapidshare()
+		if options.provider == "uploadedto":
+			from uploadedto import Uploadedto as Uploader
+		elif options.provider == "rapidshare":
+			from rapidshare import Rapidshare as Uploader
+		else:
+			from rapidshare import Rapidshare as Uploader
+
+		r = Uploader()
 		if options.collector and options.username and options.password:
 			r.collector = True
 			r.username = options.username
@@ -45,7 +50,8 @@ if __name__ == '__main__':
 		for filename in arguments:
 			result = r.upload(filename)
 			if result:
-				print "URL: %s\nDelete: %s" % (result[0], result[1])
+				print "URL: %s" % (result[0])
+				print "Delete: %s" % (result[1])
 				if r.enable_hashing and (r.hash == result[3]):
 					print "Checksum: OK"
 				elif r.enable_hashing:
@@ -56,11 +62,11 @@ if __name__ == '__main__':
 				end = time.time()
 				speed = (r.length / (end - start))
 				print "Uploaded in [%ss] @ [%s MB/s]" % (round((end - start), 2), round(speed/(1024*1024), 2))
-				print "Scores [%s]" % (r.cpu())
+
+				score = getattr(r, "cpu", None)
+				if callable(score):
+					print "Scores [%s]" % (r.cpu())
 			else:
 				print "File [%s] does not exist" % (filename)
 	else:
-		if options.cpu:
-			print Rapidshare.cpu()
-		else:
-			p.print_help()
+		p.print_help()
