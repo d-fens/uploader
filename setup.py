@@ -7,7 +7,7 @@ setup(name='py-uploader',
       author='d-fens',
       url='http://github.com/d-fens/py-uploader/',
       license = 'MIT',
-      py_modules=['rapidshare', 'uploaded'],
+      py_modules=['rapidshare', 'uploadedto'],
       scripts=['uploader'],
       classifiers=[
             'Environment :: Console',

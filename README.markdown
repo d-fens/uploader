@@ -43,6 +43,13 @@ Usage
 	  --chunk-size=CHUNK_SIZE
 	                        set the chunk size to read and upload at (bytes)
 
+Installation
+------------
+To install run this as root: `python setup.py install`
+
+To do a local install do: `python setup.py install --home="$HOME"`
+
+Now see below on how to use it!
 
 Examples
 ------------

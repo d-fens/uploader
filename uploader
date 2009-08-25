@@ -13,7 +13,7 @@ except ImportError:
 if __name__ == '__main__':
 	p = optparse.OptionParser(description='Uploads files to file hosting services',
 		prog='uploader',
-		version='0.2',
+		version='%prog 0.2',
 		usage='%prog file')
 	p.add_option('-P', '--provider', help='sets the hosting provider')
 	p.add_option('--collector', action='store_true', help='sets the login type as collector')
